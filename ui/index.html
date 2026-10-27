@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'" />
+  <title>Generative Fill</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="root">
+    <section class="bar">
+      <div class="grip" title="Drag to move"></div>
+      <svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l1.8 5.6L19.5 9.5l-5.7 1.9L12 17l-1.8-5.6L4.5 9.5l5.7-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>
+      <input id="prompt" type="text" autocomplete="off" spellcheck="false"
+             placeholder="What should go into the selection? (empty = remove)" />
+      <button id="go" class="primary">Generate</button>
+      <button id="menu" class="icon" title="Settings">⋯</button>
+      <button id="close" class="icon" title="Hide (Esc)">✕</button>
+    </section>
+
+    <div id="status" class="status" hidden></div>
+
+    <section id="variants" class="variants" hidden>
+      <div class="strip" id="strip"></div>
+      <div class="actions">
+        <button id="keep" class="primary">Keep</button>
+        <button id="discard">Discard</button>
+        <span class="hint">Alt+←/→ to browse · Generate again adds variants</span>
+      </div>
+    </section>
+
+    <section id="settings" class="settings" hidden>
+      <label>Gemini API key
+        <input id="s-key" type="password" placeholder="AIza…" autocomplete="off" />
+      </label>
+      <label>Model
+        <span class="row">
+          <select id="s-model"></select>
+          <button id="s-models" title="Load the image models your key can use">Load</button>
+        </span>
+      </label>
+      <div class="grid">
+        <label>Variants per click
+          <input id="s-variants" type="number" min="1" max="4" />
+        </label>
+        <label>Context around selection
+          <input id="s-padding" type="number" min="0" max="2" step="0.05" />
+        </label>
+        <label>Output size
+          <select id="s-size">
+            <option value="">Model default</option>
+            <option>1K</option><option>2K</option><option>4K</option>
+          </select>
+        </label>
+        <label>Shortcut
+          <input id="s-hotkey" />
+        </label>
+      </div>
+      <label>PhotoCraft folder (contains photocraft.exe)
+        <span class="row">
+          <input id="s-dir" placeholder="C:\…\PhotoCraft" />
+          <button id="s-browse">Browse…</button>
+        </span>
+      </label>
+      <label class="check">
+        <input id="s-launch" type="checkbox" /> Start PhotoCraft together with GenFill
+      </label>
+      <div class="grid">
+        <label>Control port
+          <input id="s-port" type="number" min="1" max="65535" />
+        </label>
+        <label>Exchange folder
+          <input id="s-root" />
+        </label>
+      </div>
+      <div class="actions">
+        <button id="s-save" class="primary">Save</button>
+        <button id="s-start">Start PhotoCraft</button>
+        <button id="s-probe">Test connection</button>
+        <span class="spacer"></span>
+        <button id="s-quit" class="danger">Quit</button>
+      </div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

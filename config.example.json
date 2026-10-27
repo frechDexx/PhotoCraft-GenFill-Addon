@@ -1,0 +1,14 @@
+{
+  "geminiApiKey": "",
+  "model": "gemini-2.5-flash-image",
+  "imageSize": "",
+  "variants": 3,
+  "contextPadding": 0.35,
+  "maxInputSide": 1536,
+  "hotkey": "Control+Alt+G",
+  "photocraftDir": "C:\\Program Files\\PhotoCraft",
+  "launchPhotoCraft": true,
+  "controlPort": 47821,
+  "controlTokenFile": "control-token.txt",
+  "automationRoot": "exchange"
+}

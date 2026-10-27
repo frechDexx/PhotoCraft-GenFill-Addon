@@ -1,0 +1,37 @@
+{
+  "name": "photocraft-genfill",
+  "version": "1.0.0",
+  "description": "Generative Fill for the PhotoCraft image editor, powered by Google Gemini image models (Nano Banana).",
+  "main": "dist/main.js",
+  "author": "Dex",
+  "scripts": {
+    "build": "tsc -p .",
+    "start": "npm run build && electron .",
+    "probe": "npm run build && node dist/probe.js",
+    "test": "npm run build && node dist/tests/unit.js",
+    "test:e2e": "npm run build && node dist/tests/e2e.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "electron": "^45.0.0",
+    "typescript": "^5.9.3",
+    "zod": "^4.0.0"
+  },
+  "license": "MIT",
+  "keywords": [
+    "photocraft",
+    "generative-fill",
+    "inpainting",
+    "gemini",
+    "nano-banana",
+    "electron",
+    "mcp"
+  ],
+  "engines": {
+    "node": ">=20"
+  }
+}
