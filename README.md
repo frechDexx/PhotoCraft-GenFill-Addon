@@ -22,9 +22,17 @@ Select an area in PhotoCraft, press `Ctrl+Alt+G`, describe what should go there,
 - **Node.js 20 or newer** ([nodejs.org](https://nodejs.org), the LTS version is fine)
 - A **Gemini API key** with billing enabled (see below)
 
+## Download
+
+**[⬇ Download the latest release (ZIP)](https://github.com/frechDexx/PhotoCraft-GenFill-Addon/releases/latest)**: open the release and pick `PhotoCraft-GenFill-Addon-vX.Y.Z.zip` under *Assets*. Or clone the repository:
+
+```bash
+git clone https://github.com/frechDexx/PhotoCraft-GenFill-Addon.git
+```
+
 ## Installation
 
-1. Download or clone this repository into a folder of your choice, e.g. `C:\Tools\photocraft-genfill`.
+1. Unzip the download (or clone the repository) into a folder of your choice, e.g. `C:\Tools\PhotoCraft-GenFill-Addon`.
 2. Double-click **`Start GenFill.vbs`**. On the first start it installs the dependencies (about a minute), then the prompt bar opens with its settings.
 3. In the settings:
    - **PhotoCraft folder**: click *Browse…* and choose the folder that contains `photocraft.exe`.
