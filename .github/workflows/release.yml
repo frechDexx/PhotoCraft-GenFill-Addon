@@ -1,10 +1,11 @@
-# Builds the download ZIP and publishes a GitHub release whenever a version tag is pushed.
-#   git tag v1.0.1 && git push origin v1.0.1
+# Publishes a GitHub release with the download ZIP whenever main carries a version
+# (from package.json) that has no release yet. To release: bump "version", push.
 name: Release
 
 on:
   push:
-    tags: ["v*"]
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -15,11 +16,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Version
+        id: v
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v$(node -p "require('./package.json').version")"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists, nothing to do."
+            echo "new=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "new=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/setup-node@v4
+        if: steps.v.outputs.new == 'true'
         with:
           node-version: 22
 
       - name: Install and test
+        if: steps.v.outputs.new == 'true'
         env:
           ELECTRON_SKIP_BINARY_DOWNLOAD: "1"
         run: |
@@ -27,15 +44,16 @@ jobs:
           npm test
           npm run test:e2e
 
-      - name: Build ZIP
-        run: |
-          git archive --format=zip --prefix=PhotoCraft-GenFill-Addon/ -o "PhotoCraft-GenFill-Addon-${GITHUB_REF_NAME}.zip" "${GITHUB_REF_NAME}"
-
-      - name: Publish release
+      - name: Build ZIP and publish release
+        if: steps.v.outputs.new == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.v.outputs.tag }}
         run: |
-          gh release create "${GITHUB_REF_NAME}" "PhotoCraft-GenFill-Addon-${GITHUB_REF_NAME}.zip" \
-            --title "PhotoCraft-GenFill Addon ${GITHUB_REF_NAME}" \
+          ZIP="PhotoCraft-GenFill-Addon-${TAG}.zip"
+          git archive --format=zip --prefix=PhotoCraft-GenFill-Addon/ -o "$ZIP" HEAD
+          gh release create "$TAG" "$ZIP" \
+            --target "$GITHUB_SHA" \
+            --title "PhotoCraft-GenFill Addon ${TAG}" \
             --notes-file .github/release-notes.md \
             --latest

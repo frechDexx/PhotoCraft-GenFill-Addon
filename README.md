@@ -141,6 +141,8 @@ npm run probe      # writes probe-report.json from a running PhotoCraft
 npm start          # build and run the bar
 ```
 
+**Releasing:** bump `"version"` in `package.json` (and add a `CHANGELOG.md` entry) and push to `main`. The release workflow runs the tests, builds `PhotoCraft-GenFill-Addon-vX.Y.Z.zip` and publishes the GitHub release.
+
 The mock PhotoCraft behaves like the real bridge mode, including the commands it refuses, so the end-to-end test catches regressions without PhotoCraft or an API key.
 
 | File | Purpose |
