@@ -1,0 +1,23 @@
+# Runs the unit and end-to-end tests on every push and pull request.
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install and test
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: "1"
+        run: |
+          npm ci --no-audit --no-fund
+          npm test
+          npm run test:e2e

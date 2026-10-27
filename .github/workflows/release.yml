@@ -1,0 +1,41 @@
+# Builds the download ZIP and publishes a GitHub release whenever a version tag is pushed.
+#   git tag v1.0.1 && git push origin v1.0.1
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install and test
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: "1"
+        run: |
+          npm ci --no-audit --no-fund
+          npm test
+          npm run test:e2e
+
+      - name: Build ZIP
+        run: |
+          git archive --format=zip --prefix=PhotoCraft-GenFill-Addon/ -o "PhotoCraft-GenFill-Addon-${GITHUB_REF_NAME}.zip" "${GITHUB_REF_NAME}"
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" "PhotoCraft-GenFill-Addon-${GITHUB_REF_NAME}.zip" \
+            --title "PhotoCraft-GenFill Addon ${GITHUB_REF_NAME}" \
+            --notes-file .github/release-notes.md \
+            --latest
